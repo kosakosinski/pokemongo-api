@@ -1,9 +1,17 @@
 from setuptools import setup
-from pip.req import parse_requirements
+try: # for pip >= 10
+    from pip._internal.req import parse_requirements
+except ImportError:
+    from pip.req import parse_requirements
 
-install_reqs = parse_requirements("requirements.txt", session=False)
+requirements_path = "./requirements.txt"
 
-reqs = [str(ir.req) for ir in install_reqs]
+install_reqs = parse_requirements(requirements_path, session=False)
+
+try:
+    reqs = [str(ir.requirement) for ir in install_reqs]
+except:
+    reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
     name='pogo',
